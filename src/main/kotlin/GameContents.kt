@@ -122,10 +122,3 @@ val levelThreeCards = listOf(
     Card(Colour.RED, 4, mapOf(Colour.BLUE to 3, Colour.GREEN to 6, Colour.RED to 3), 3),
     Card(Colour.RED, 5, mapOf(Colour.GREEN to 7, Colour.RED to 3), 3)
 )
-
-
-fun main() {
-    println(levelOneCards.size)
-    println(levelTwoCards.size)
-    println(levelThreeCards.size)
-}
