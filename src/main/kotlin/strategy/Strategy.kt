@@ -1,3 +1,13 @@
+package strategy
+
+import Player
+import PublicGameState
+import Action
+import TokenInventory
+import Colour
+import Royalty
+
+
 interface Strategy {
     fun makeMove(player: Player, gameState: PublicGameState): Action
 

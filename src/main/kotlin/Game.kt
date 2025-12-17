@@ -1,3 +1,5 @@
+import strategy.Strategy
+
 class Game(val playerCount: Int, private val gameStateHandler: GameStateHandler) {
     val royalties = getStartingRoyalties(playerCount).toMutableList()
     private val bank = startingTokenBank(playerCount).copy()
@@ -82,7 +84,7 @@ class Game(val playerCount: Int, private val gameStateHandler: GameStateHandler)
         displayState()
         println()
 
-        val availableRoyalties = getAvailableRoyalties(player, royalties)
+        val availableRoyalties = player.getAvailableRoyalties(royalties)
         val royaltyToTake: Royalty? = if (availableRoyalties.size > 1) {
             player.chooseRoyalty(availableRoyalties)
         } else {
@@ -138,8 +140,7 @@ class Game(val playerCount: Int, private val gameStateHandler: GameStateHandler)
     private fun handlePurchaseBoard(player: Player, purchaseBoard: Action.PurchaseBoard): Boolean {
         if (purchaseBoard.card != getCardFromBoard(purchaseBoard.level, purchaseBoard.idx)) return false
 
-        val cost = calculateCost(player, purchaseBoard.card)
-        val payment = calculatePayment(cost, player) ?: return false
+        val payment = player.calculatePayment(purchaseBoard.card) ?: return false
 
         payment.forEach { (colour, count) ->
             bank.updateTokenCount(colour, count)
@@ -176,8 +177,7 @@ class Game(val playerCount: Int, private val gameStateHandler: GameStateHandler)
         /* Assume purchaseReserved's card is legit */
         val card = purchaseReserved.card
 
-        val cost = calculateCost(player, card)
-        val payment = calculatePayment(cost, player) ?: return false
+        val payment = player.calculatePayment(purchaseReserved.card) ?: return false
 
         payment.forEach { (colour, count) ->
             bank.updateTokenCount(colour, count)

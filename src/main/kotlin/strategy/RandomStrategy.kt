@@ -1,6 +1,18 @@
+package strategy
+
+import getAllCollectThree
+import getAllCollectTwo
+import removeRandomTokens
+import Player
+import PublicGameState
+import Action
+import Colour
+import TokenInventory
+import Royalty
+
 class RandomStrategy : Strategy {
     override fun makeMove(player: Player, gameState: PublicGameState): Action {
-        val purchases = getAllPurchaseBoard(player, gameState) + getAllPurchaseReserved(player)
+        val purchases = player.getAllPurchaseBoard(gameState) + player.getAllPurchaseReserved()
         val collectThrees = getAllCollectThree(gameState)
         val collectTwos = getAllCollectTwo(gameState)
 
@@ -23,7 +35,7 @@ class RandomStrategy : Strategy {
             } else if (x < 0.95) {
                 return collectTwos.randomOrNull() ?: collectThrees.random()
             } else {
-                val reserves = getAllReserveTop(player, gameState) + getAllReserveBoard(player, gameState)
+                val reserves = player.getAllReserveTop(gameState) + player.getAllReserveBoard(gameState)
                 return reserves.random()
             }
         }

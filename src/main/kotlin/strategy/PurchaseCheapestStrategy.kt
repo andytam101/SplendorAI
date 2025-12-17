@@ -1,9 +1,22 @@
+package strategy
+
+import getAllCollectThree
+import getAllCollectTwo
+import removeRandomTokens
+import Action
+import PublicGameState
+import Player
+import TokenInventory
+import Colour
+import Royalty
+
+
 class PurchaseCheapestStrategy : Strategy {
     override fun makeMove(player: Player, gameState: PublicGameState): Action {
-        val allPurchases = getAllPurchaseBoard(player, gameState) + getAllPurchaseReserved(player)
+        val allPurchases = player.getAllPurchaseBoard(gameState) + player.getAllPurchaseReserved()
         if (allPurchases.isNotEmpty()) {
             return allPurchases.minBy {
-                calculatePayment(it.card, player)?.let { c -> effectiveCost(c) } ?: Integer.MAX_VALUE
+                player.calculatePayment(it.card)?.let { c -> effectiveCost(c) } ?: Integer.MAX_VALUE
             }
         } else {
             val collectThrees = getAllCollectThree(gameState)
@@ -14,7 +27,7 @@ class PurchaseCheapestStrategy : Strategy {
             } else if (x < 0.95) {
                 return collectTwos.randomOrNull() ?: collectThrees.random()
             } else {
-                val reserves = getAllReserveTop(player, gameState) + getAllReserveBoard(player, gameState)
+                val reserves = player.getAllReserveTop(gameState) + player.getAllReserveBoard(gameState)
                 return reserves.random()
             }
         }

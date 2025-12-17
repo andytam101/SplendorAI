@@ -1,3 +1,7 @@
+import strategy.PurchaseCheapestStrategy
+import strategy.RandomStrategy
+import strategy.Strategy
+
 fun main() {
     val players: List<Pair<String, Strategy>> = listOf(
         Pair("Random 1", RandomStrategy()),
